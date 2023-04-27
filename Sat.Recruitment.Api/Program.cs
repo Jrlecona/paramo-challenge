@@ -22,7 +22,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Add AutoMapper
-var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new UserMappingProfile()); });
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new UserMappingProfile());
+    mc.AddProfile(new ResultMappingProfile());
+    mc.AddProfile(new ErrorMappingProfile());
+});
 var mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 

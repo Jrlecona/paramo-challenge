@@ -3,5 +3,5 @@
 public class Result
 {
     public bool IsSuccess { get; set; }
-    public List<Error> MessagesErrors { get; set; }
+    public List<Error> Errors { get; set; }
 }

@@ -4,10 +4,10 @@ using Sat.Recruitment.Domain.Entities;
 
 namespace Sat.Recruitment.Application.MappingProfiles;
 
-public class UserMappingProfile : Profile
+public class ResultMappingProfile : Profile
 {
-    public UserMappingProfile()
+    public ResultMappingProfile()
     {
-        CreateMap<UserDto, User>().ReverseMap();
+        CreateMap<Result, ResultDto>().ReverseMap();
     }
 }

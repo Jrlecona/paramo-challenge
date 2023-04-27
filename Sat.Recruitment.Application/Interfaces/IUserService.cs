@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sat.Recruitment.Application.Dtos;
-using Sat.Recruitment.Domain.Entities;
+﻿using Sat.Recruitment.Application.Dtos;
 
-namespace Sat.Recruitment.Application.Interfaces
+namespace Sat.Recruitment.Application.Interfaces;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<Result> CreateUser(UserDto userDto);
-        Task<Result> ValidateUser(UserDto userDto);
-    }
+    Task<ResultDto> CreateUser(UserDto userDto);
+    Task<ResultDto> ValidateUser(UserDto userDto);
 }

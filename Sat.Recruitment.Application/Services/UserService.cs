@@ -1,9 +1,7 @@
-﻿using System.ComponentModel;
-using AutoMapper;
+﻿using AutoMapper;
 using Sat.Recruitment.Application.Dtos;
 using Sat.Recruitment.Application.Interfaces;
 using Sat.Recruitment.Domain.Entities;
-using Sat.Recruitment.Domain.Enums;
 using Sat.Recruitment.Domain.Interfaces;
 
 namespace Sat.Recruitment.Application.Services;
@@ -19,20 +17,20 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<Result> ValidateUser(UserDto userDto)
+    public async Task<ResultDto> ValidateUser(UserDto userDto)
     {
         var userEntity = _mapper.Map<User>(userDto);
-        var entityResult = _userRepository.ValidateUser(userEntity);
-        var result = _mapper.Map<Result>(entityResult.Result);
+        var validateResult = await _userRepository.ValidateUser(userEntity);
+        var result = _mapper.Map<ResultDto>(validateResult);
 
         return result;
     }
 
-    public async Task<Result> CreateUser(UserDto userDto)
+    public async Task<ResultDto> CreateUser(UserDto userDto)
     {
         var userEntity = _mapper.Map<User>(userDto);
         var entityResult = await _userRepository.CreateUser(userEntity);
-        var result = _mapper.Map<Result>(entityResult);
+        var result = _mapper.Map<ResultDto>(entityResult);
 
         return result;
     }
