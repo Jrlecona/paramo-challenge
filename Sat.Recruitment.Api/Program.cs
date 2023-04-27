@@ -1,27 +1,53 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Sat.Recruitment.Application.Interfaces;
+using Sat.Recruitment.Application.MappingProfiles;
+using Sat.Recruitment.Application.Services;
+using Sat.Recruitment.Domain.Entities;
+using Sat.Recruitment.Domain.Interfaces;
+using Sat.Recruitment.Infrastructure.Repositories;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+var builder = WebApplication.CreateBuilder(args);
 
-namespace Sat.Recruitment.Api
+// Add services to the container.
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+// Add repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Add services
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Add AutoMapper
+var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new UserMappingProfile()); });
+var mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sat Recruitment", Version = "v1" }); });
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+    // specifying the Swagger JSON endpoint.
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sat Recruitment V1"); });
 }
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

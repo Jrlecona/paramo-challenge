@@ -11,6 +11,6 @@ namespace Sat.Recruitment.Domain.Interfaces
     {
         public Task<Result> CreateUser(User user);
         //Task<bool> CheckIfUserExists(string email, string phone, string name, string address);
-        public Task ReadUsersFromFile();
+        public Task<Result> ValidateUser(User user);
     }
 }

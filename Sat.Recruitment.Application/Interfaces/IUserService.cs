@@ -11,5 +11,6 @@ namespace Sat.Recruitment.Application.Interfaces
     public interface IUserService
     {
         Task<Result> CreateUser(UserDto userDto);
+        Task<Result> ValidateUser(UserDto userDto);
     }
 }
